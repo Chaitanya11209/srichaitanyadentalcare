@@ -5,52 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Dental Clinic Management System</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Welcome to Our Dental Clinic</h1>
-            <button id="toggle-dark-mode">Toggle Dark Mode</button>
-        </header>
-        <nav>
-            <ul>
-                <li>Dashboard</li>
-                <li>Patients</li>
-                <li>Appointments</li>
-                <li>Reports</li>
-            </ul>
-        </nav>
-        <main>
-            <section id="dashboard">
-                <h2>Dashboard</h2>
-                <div>
-                    <!-- Add statistics and graphs here -->
-                </div>
-            </section>
-            <section id="patient-management">
-                <h2>Patient Management</h2>
-                <input type="text" placeholder="Search Patients" />
-                <button>Add Patient</button>
-                <ul>
-                    <!-- List of patients with edit/delete options -->
-                </ul>
-            </section>
-            <section id="appointment-booking">
-                <h2>Appointment Booking</h2>
-                <form>
-                    <!-- Advanced booking form with doctor assignment and payment tracking -->
-                </form>
-            </section>
-            <section id="reports">
-                <h2>Reports</h2>
-                <button>Export to CSV</button>
-                <!-- Comprehensive reporting and analytics section -->
-            </section>
-        </main>
-    </div>
-    <script src="script.js"></script>
-    <script>
-        // JavaScript for managing functionality
-    </script>
+    <header>
+        <h1>Dental Clinic Management System</h1>
+        <button id="darkModeToggle">Toggle Dark Mode</button>
+    </header>
+    <main>
+        <section id="patientManagement">
+            <h2>Patient Management</h2>
+            <input type="text" id="searchPatient" placeholder="Search Patient..." />
+            <ul id="patientList"></ul>
+            <button id="addPatient">Add Patient</button>
+        </section>
+        <section id="appointmentBooking">
+            <h2>Appointment Booking</h2>
+            <form id="appointmentForm">
+                <input type="date" id="appointmentDate" required />
+                <input type="time" id="appointmentTime" required />
+                <select id="doctorAssignment">
+                    <option value="doctor1">Doctor 1</option>
+                    <option value="doctor2">Doctor 2</option>
+                </select>
+                <button type="submit">Book Appointment</button>
+            </form>
+        </section>
+        <section id="analytics">
+            <h2>Analytics and Reports</h2>
+            <button id="generateReport">Generate Report</button>
+            <div id="reportOutput"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2026 Dental Clinic</p>
+    </footer>
 </body>
 </html>

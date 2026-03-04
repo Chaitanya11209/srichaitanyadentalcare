@@ -3,70 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Premium Dental Clinic Management System</title>
-    <style>
-        /* Basic styling for glassmorphism effect */
-        body {
-            font-family: 'Arial', sans-serif;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            color: #333;
-            padding: 20px;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-        }
-        h1 {
-            text-align: center;
-        }
-        .dark-mode {
-            background-color: #333;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Dental Clinic Management System</h1>
-        <button id="darkModeToggle">Toggle Dark Mode</button>
-        <div id="patientSearch">
-            <input type="text" placeholder="Search Patients" />
-            <button>Search</button>
-        </div>
-        <h2>Patient List</h2>
-        <table id="patientTable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Contact Info</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Patient rows go here -->
-            </tbody>
-        </table>
-        <button id="addPatient">Add Patient</button>
+        <header>
+            <h1>Welcome to Our Dental Clinic</h1>
+            <button id="toggle-dark-mode">Toggle Dark Mode</button>
+        </header>
+        <nav>
+            <ul>
+                <li>Dashboard</li>
+                <li>Patients</li>
+                <li>Appointments</li>
+                <li>Reports</li>
+            </ul>
+        </nav>
+        <main>
+            <section id="dashboard">
+                <h2>Dashboard</h2>
+                <div>
+                    <!-- Add statistics and graphs here -->
+                </div>
+            </section>
+            <section id="patient-management">
+                <h2>Patient Management</h2>
+                <input type="text" placeholder="Search Patients" />
+                <button>Add Patient</button>
+                <ul>
+                    <!-- List of patients with edit/delete options -->
+                </ul>
+            </section>
+            <section id="appointment-booking">
+                <h2>Appointment Booking</h2>
+                <form>
+                    <!-- Advanced booking form with doctor assignment and payment tracking -->
+                </form>
+            </section>
+            <section id="reports">
+                <h2>Reports</h2>
+                <button>Export to CSV</button>
+                <!-- Comprehensive reporting and analytics section -->
+            </section>
+        </main>
     </div>
+    <script src="script.js"></script>
     <script>
-        // JavaScript functionalities
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        darkModeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-        });
-
-        const addPatientButton = document.getElementById('addPatient');
-        addPatientButton.onclick = () => {
-            // Code to open modal for adding patient
-            alert('Open modal to add patient');
-        };
-
-        // Functions for edit, delete, and other functionalities would go here
+        // JavaScript for managing functionality
     </script>
 </body>
 </html>

@@ -23,7 +23,7 @@ padding:20px;
 }
 
 .container{
-margin-top:40px;
+margin-top:30px;
 }
 
 input,select{
@@ -36,21 +36,30 @@ border-radius:5px;
 
 button{
 padding:12px 25px;
-background:#25D366;
 border:none;
-color:white;
 font-size:16px;
 cursor:pointer;
-border-radius:5px;
+border-radius:6px;
 margin-top:10px;
 }
 
-button:hover{
-background:#20b858;
+.book{
+background:#25D366;
+color:white;
 }
 
-.map-btn{
+.call{
+background:#2196F3;
+color:white;
+}
+
+.map{
 background:#ff5722;
+color:white;
+}
+
+button:hover{
+opacity:0.9;
 }
 
 .footer{
@@ -66,6 +75,7 @@ font-size:14px;
 
 <div class="header">
 <h2>🦷 Sri Chaitanya Dental Care</h2>
+<p>Quick Appointment Booking</p>
 </div>
 
 <div class="container">
@@ -87,7 +97,7 @@ font-size:14px;
 
 <br>
 
-<input id="treatment" placeholder="Treatment">
+<input id="treatment" placeholder="Treatment (Cleaning, RCT, etc)">
 
 <br>
 
@@ -95,11 +105,15 @@ font-size:14px;
 
 <br><br>
 
-<button onclick="sendWhatsApp()">Book Appointment</button>
+<button class="book" onclick="bookAppointment()">Book Appointment</button>
 
 <br>
 
-<button class="map-btn" onclick="openMap()">📍 View Clinic Location</button>
+<button class="call" onclick="callClinic()">📞 Call Clinic</button>
+
+<br>
+
+<button class="map" onclick="openMap()">📍 View Clinic Location</button>
 
 </div>
 
@@ -111,15 +125,15 @@ Online WhatsApp Appointment Booking
 
 /* CHANGE THESE NUMBERS */
 
-let doctorNumber="918277090710"
-let clinicNumber="918317575165"
+let doctorNumber="91XXXXXXXXXX"
+let clinicNumber="91XXXXXXXXXX"
 
-/* GOOGLE MAP LINK */
+/* CHANGE MAP LINK */
 
-let clinicMap="https://maps.app.goo.gl/qYiuSzNoLLMZX5Wy8"
+let clinicMap="https://maps.google.com/?q=Sri+Chaitanya+Dental+Care"
 
 
-function getFormData(){
+function bookAppointment(){
 
 let type=document.getElementById("patientType").value
 let name=document.getElementById("name").value
@@ -127,40 +141,28 @@ let phone=document.getElementById("phone").value
 let treatment=document.getElementById("treatment").value
 let time=document.getElementById("time").value
 
-if(!name || !phone){
+if(!name || !phone || !treatment || !time){
 
-alert("Please enter patient name and phone")
+alert("Please fill all details")
 
-return null
+return
 
 }
 
 let date=new Date(time).toLocaleString()
 
-return {type,name,phone,treatment,time,date}
-
-}
-
-/* WHATSAPP MESSAGE */
-
-function sendWhatsApp(){
-
-let data=getFormData()
-
-if(!data) return
-
 let message=
 `🦷 Sri Chaitanya Dental Care Appointment
 
-Patient Type: ${data.type}
+Patient Type: ${type}
 
-Patient Name: ${data.name}
+Patient Name: ${name}
 
-Patient Phone: ${data.phone}
+Patient Phone: ${phone}
 
-Treatment: ${data.treatment}
+Treatment: ${treatment}
 
-Preferred Time: ${data.date}`
+Preferred Time: ${date}`
 
 let doctorURL=`https://wa.me/${doctorNumber}?text=${encodeURIComponent(message)}`
 let clinicURL=`https://wa.me/${clinicNumber}?text=${encodeURIComponent(message)}`
@@ -175,7 +177,11 @@ window.open(clinicURL)
 
 }
 
-/* OPEN GOOGLE MAP */
+function callClinic(){
+
+window.location.href="tel:+91XXXXXXXXXX"
+
+}
 
 function openMap(){
 

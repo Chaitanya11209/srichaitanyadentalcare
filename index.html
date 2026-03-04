@@ -1,991 +1,289 @@
-diff --git a/index.html b/index.html
-index 44fc0017c61e1a22bd28e3da8c1f81b171737774..612ee976e0623f4f77017fece2b2ecc4b74981f9 100644
---- a/index.html
-+++ b/index.html
-@@ -1,665 +1,328 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
--<meta charset="UTF-8">
--
--<!-- 📱 Mobile Viewport -->
--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
--
--<title>For My Love Bhavani 💖</title>
--
--<style>
--
--/* 🍎 iPhone Safari Height Fix */
--html,body{
--  height:100%;
--}
--
--body{
--  min-height:100svh;
--  margin:0;
--  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
--  font-family:'Segoe UI',sans-serif;
--  text-align:center;
--  overflow-y:auto;
--  overflow-x:hidden;
--  -webkit-overflow-scrolling:touch;
--}
--
--
--/* Stars */
--#stars{
--  position:fixed;
--  top:0;
--  left:0;
--  width:100%;
--  height:100%;
--  z-index:-2;
--  background:black;
--}
--
--/* Fireworks */
--#fireworks{
--  position:fixed;
--  top:0;
--  left:0;
--  z-index:-1;
--}
--
--/* White Text */
--h1,h2,.timer,p,b{
--  color:#fff;
--  text-shadow:0 2px 8px rgba(0,0,0,0.4);
--}
--
--/* App Layout */
--.app{
--  background:rgba(255,255,255,0.15);
--  backdrop-filter:blur(15px);
--  border-radius:25px;
--  box-shadow:0 15px 40px rgba(0,0,0,0.4);
--  max-width:420px;
--  margin:40px auto;
--  overflow:hidden;
--}
--
--/* Header */
--.app-header{
--  background:linear-gradient(135deg,#ff4d6d,#c77dff);
--  padding:18px;
--  font-size:1.4em;
--  font-weight:bold;
--  color:white;
--}
--
--.app-body{
--  padding:25px 20px 30px;
--}
--
--h1{font-size:2.2em;}
--h2{font-size:1.7em;}
--
--/* Timer */
--.timer{
--  margin:15px 0;
--  font-size:1.3em;
--  font-weight:bold;
--  background:rgba(255,255,255,0.25);
--  padding:10px;
--  border-radius:15px;
--}
--
--/* Buttons */
--.btn{
--  margin:6px;
--  padding:10px 20px;
--  border:none;
--  border-radius:25px;
--  font-size:0.95em;
--  cursor:pointer;
--  background:linear-gradient(135deg,#ff4d6d,#c77dff);
--  color:white;
--}
--
--.btn:hover{opacity:0.9;}
--
--/* Popup */
--.popup{
--  display:none;
--  position:fixed;
--  top:0;left:0;
--  width:100%;
--  height:100%;
--  background:rgba(0,0,0,0.8);
--  z-index:1000;
--}
--
--.popup-content{
--  background:#ff6f91;
--  padding:25px;
--  border-radius:20px;
--  width:85%;
--  max-width:350px;
--  margin:25% auto;
--  animation:pop 0.5s;
--  color:white;
--}
--
--@keyframes pop{
--  from{transform:scale(0);}
--  to{transform:scale(1);}
--}
--
--/* Hearts */
--.heart{
--  position:fixed;
--  bottom:-20px;
--  font-size:26px;
--  animation:floatUp 6s linear infinite;
--}
--
--@keyframes floatUp{
--  0%{transform:translateY(0);opacity:1;}
--  100%{transform:translateY(-110vh);opacity:0;}
--}
--
--/* Petals */
--.petal{
--  position:fixed;
--  top:-20px;
--  font-size:22px;
--  pointer-events:none;
--  animation:fall linear forwards;
--}
--
--@keyframes fall{
--  to{
--    transform:translateY(110vh) rotate(360deg);
--    opacity:0;
--  }
--}
--
--/* Notification */
--.notification{
--  position:fixed;
--  top:-120px;
--  left:50%;
--  transform:translateX(-50%);
--  background:linear-gradient(135deg,#ff4d6d,#c77dff);
--  color:white;
--  padding:15px 20px;
--  border-radius:15px;
--  width:90%;
--  max-width:380px;
--  box-shadow:0 10px 25px rgba(0,0,0,0.4);
--  z-index:2000;
--  display:flex;
--  gap:12px;
--  transition:top 0.8s ease;
--  cursor:pointer;
--}
--
--.notification.show{top:15px;}
--
--audio{
--  margin-top:10px;
--  width:90%;
--}
--
--/* Beat Sync */
--.beat{
--  animation:beat 0.6s infinite alternate;
--}
--
--@keyframes beat{
--  from{transform:scale(1);}
--  to{transform:scale(1.03);}
--}
--
--/* Valentine Title */
--.valentine-title{
--  animation:fadeIn 2s ease,glowTitle 3s infinite alternate,floatTitle 4s ease infinite;
--}
--
--@keyframes fadeIn{
--  from{opacity:0;transform:translateY(20px);}
--  to{opacity:1;transform:translateY(0);}
--}
--
--@keyframes glowTitle{
--  from{text-shadow:0 0 5px #fff;}
--  to{text-shadow:0 0 15px #ff4d6d;}
--}
--
--@keyframes floatTitle{
--  0%{transform:translateY(0);}
--  50%{transform:translateY(-6px);}
--  100%{transform:translateY(0);}
--}
--
--/* 📱 Universal Mobile Optimization */
--@media screen and (max-width:768px){
--
--  body{font-size:18px;}
--
--  .app{
--    max-width:96%;
--    margin:12px auto;
--    border-radius:20px;
--  }
--
--  .app-header{
--    font-size:1.2em;
--    padding:14px;
--  }
--
--  .app-body{
--    padding:18px 15px;
--  }
--
--  h1{font-size:2em;}
--  h2{font-size:1.4em;}
--
--  p{font-size:1.1em;}
--
--  .timer{font-size:1.2em;}
--
--  .btn{
--    width:90%;
--    font-size:1.05em;
--    padding:14px;
--    margin:6px auto;
--    display:block;
--  }
--
--  audio{width:100%;}
--
--  .popup-content{
--    margin:35% auto;
--  }
--}
--
--</style>
-+  <meta charset="UTF-8" />
-+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-+  <title>BrightSmile Dental Clinic</title>
-+  <style>
-+    :root {
-+      --primary: #0ea5b7;
-+      --primary-dark: #0b7285;
-+      --accent: #f59e0b;
-+      --ink: #1f2937;
-+      --muted: #6b7280;
-+      --bg: #f8fbfc;
-+      --card: #ffffff;
-+    }
-+
-+    * { box-sizing: border-box; }
-+
-+    body {
-+      margin: 0;
-+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-+      color: var(--ink);
-+      background: var(--bg);
-+      line-height: 1.6;
-+    }
-+
-+    .container {
-+      width: min(1100px, 92%);
-+      margin: 0 auto;
-+    }
-+
-+    header {
-+      background: linear-gradient(135deg, #cffafe, #e0f2fe);
-+      border-bottom: 1px solid #c9f4fb;
-+      position: sticky;
-+      top: 0;
-+      z-index: 5;
-+    }
-+
-+    .nav {
-+      display: flex;
-+      align-items: center;
-+      justify-content: space-between;
-+      padding: 0.9rem 0;
-+      gap: 1rem;
-+    }
-+
-+    .brand {
-+      font-weight: 700;
-+      color: var(--primary-dark);
-+      font-size: 1.2rem;
-+    }
-+
-+    .nav-links {
-+      display: flex;
-+      gap: 1rem;
-+      flex-wrap: wrap;
-+    }
-+
-+    .nav-links a {
-+      color: var(--ink);
-+      text-decoration: none;
-+      font-weight: 600;
-+      font-size: 0.95rem;
-+    }
-+
-+    .hero {
-+      padding: 4rem 0 3.5rem;
-+      background: radial-gradient(circle at top right, #f0fdfa, #ecfeff 55%, #f8fbfc);
-+    }
-+
-+    .hero-grid {
-+      display: grid;
-+      grid-template-columns: 1.15fr 1fr;
-+      gap: 2rem;
-+      align-items: center;
-+    }
-+
-+    h1 {
-+      font-size: clamp(2rem, 4vw, 2.8rem);
-+      line-height: 1.2;
-+      margin: 0 0 0.9rem;
-+    }
-+
-+    .lead {
-+      color: var(--muted);
-+      margin-bottom: 1.3rem;
-+    }
-+
-+    .cta-row {
-+      display: flex;
-+      gap: 0.8rem;
-+      flex-wrap: wrap;
-+    }
-+
-+    .btn {
-+      display: inline-block;
-+      border: none;
-+      border-radius: 999px;
-+      padding: 0.75rem 1.15rem;
-+      font-weight: 700;
-+      text-decoration: none;
-+      cursor: pointer;
-+      font-size: 0.95rem;
-+    }
-+
-+    .btn-primary {
-+      background: var(--primary);
-+      color: #fff;
-+    }
-+
-+    .btn-secondary {
-+      background: #fff;
-+      color: var(--primary-dark);
-+      border: 1px solid #bae6fd;
-+    }
-+
-+    .hero-card {
-+      background: var(--card);
-+      border-radius: 16px;
-+      padding: 1.2rem;
-+      box-shadow: 0 12px 30px rgba(11, 114, 133, 0.13);
-+    }
-+
-+    .hero-card h3 {
-+      margin-top: 0;
-+      color: var(--primary-dark);
-+    }
-+
-+    .list {
-+      padding-left: 1.1rem;
-+      margin: 0;
-+    }
-+
-+    .section {
-+      padding: 3.2rem 0;
-+    }
-+
-+    .section h2 {
-+      text-align: center;
-+      margin: 0 0 1.5rem;
-+      font-size: 1.8rem;
-+    }
-+
-+    .services {
-+      display: grid;
-+      grid-template-columns: repeat(3, minmax(0, 1fr));
-+      gap: 1rem;
-+    }
-+
-+    .card {
-+      background: var(--card);
-+      padding: 1.1rem;
-+      border-radius: 14px;
-+      border: 1px solid #e5e7eb;
-+      box-shadow: 0 8px 24px rgba(31, 41, 55, 0.05);
-+    }
-+
-+    .card h3 { margin-top: 0; }
-+
-+    .about-grid,
-+    .contact-grid {
-+      display: grid;
-+      grid-template-columns: 1fr 1fr;
-+      gap: 1rem;
-+    }
-+
-+    .hours {
-+      width: 100%;
-+      border-collapse: collapse;
-+      background: #fff;
-+      border-radius: 12px;
-+      overflow: hidden;
-+    }
-+
-+    .hours td {
-+      border-bottom: 1px solid #eef2f7;
-+      padding: 0.7rem;
-+    }
-+
-+    .hours tr:last-child td { border-bottom: none; }
-+
-+    form {
-+      display: grid;
-+      gap: 0.75rem;
-+    }
-+
-+    input,
-+    textarea {
-+      width: 100%;
-+      padding: 0.75rem;
-+      border: 1px solid #d1d5db;
-+      border-radius: 10px;
-+      font: inherit;
-+    }
-+
-+    textarea { min-height: 110px; }
-+
-+    footer {
-+      text-align: center;
-+      padding: 1.1rem 0 1.4rem;
-+      color: var(--muted);
-+      font-size: 0.95rem;
-+    }
-+
-+    @media (max-width: 850px) {
-+      .hero-grid,
-+      .about-grid,
-+      .contact-grid,
-+      .services {
-+        grid-template-columns: 1fr;
-+      }
-+
-+      .hero { padding-top: 2.8rem; }
-+    }
-+  </style>
- </head>
--
- <body>
--
--<!-- Notification -->
--<div class="notification" id="loveNote" onclick="openLoveNote()">
--  <div>💖</div>
--  <div>
--    <b>Chaitanya</b><br>
--    I love you forever, Bhavani ❤️
--  </div>
--</div>
--
--<!-- Background -->
--<canvas id="stars"></canvas>
--<canvas id="fireworks"></canvas>
--
--<!-- App -->
--<div class="app">
--
--<div class="app-header">
--💖 My Love App – Bhavani
--</div>
--
--<div class="app-body">
--
--<h1 class="valentine-title">Happy Valentine’s Day ❤️</h1>
--
--<h2>My Dear Bhavani 💕</h2>
--
--<div class="timer" id="timer"></div>
--
--<p id="typingText"></p>
--
--<p>
--Forever Yours,<br>
--<b>Chaitanya ❤️</b>
--</p>
--
--<button class="btn" onclick="showSurprise()">🎁 Surprise</button>
--<button class="btn" onclick="showProposal()">💍 Proposal</button>
--<button class="btn" onclick="openQuiz()">💖 Love Quiz</button>
--<button class="btn" onclick="openChat()">💬 Love Chat</button>
--
--<audio id="bgMusic" controls loop>
--<source src="love.mp3" type="audio/mpeg">
--</audio>
--
--<p>🎶 Our Song 💖</p>
--
--</div>
--</div>
--
--<!-- Proposal -->
--<div class="popup" id="proposal">
--<div class="popup-content">
--<h2>💍 Bhavani...</h2>
--<p>Will you be my Valentine forever? ❤️</p>
--<button class="btn" onclick="closeProposal()">Yes 😍</button>
--</div>
--</div>
--
--<!-- Quiz -->
--<div class="popup" id="quiz">
--<div class="popup-content">
--
--<h2>💖 Love Quiz</h2>
--
--<p id="question"></p>
--
--<button class="btn" onclick="answer(1)" id="a1"></button><br><br>
--<button class="btn" onclick="answer(2)" id="a2"></button><br><br>
--<button class="btn" onclick="answer(3)" id="a3"></button>
--
--</div>
--</div>
--
--<!-- Chat -->
--<div class="popup" id="chat">
--<div class="popup-content" style="background:#111;">
--
--<h3 style="color:#25D366;">💬 Bhavani</h3>
--
--<div id="chatBox" style="
--background:#000;
--padding:15px;
--height:250px;
--overflow-y:auto;
--border-radius:10px;
--text-align:left;
--font-size:0.9em;">
--</div>
--
--<button class="btn" onclick="closeChat()">Close ❌</button>
--
--</div>
--</div>
--
--<script>
--
--/* Stars */
--const starCanvas=document.getElementById("stars");
--const starCtx=starCanvas.getContext("2d");
--
--function resizeStars(){
--starCanvas.width=window.innerWidth;
--starCanvas.height=window.innerHeight;
--}
--resizeStars();
--window.addEventListener("resize",resizeStars);
--
--const stars=[];
--
--for(let i=0;i<200;i++){
--stars.push({
--x:Math.random()*starCanvas.width,
--y:Math.random()*starCanvas.height,
--r:Math.random()*1.5+0.5,
--s:Math.random()*0.5+0.2
--});
--}
--
--function drawStars(){
--
--starCtx.clearRect(0,0,starCanvas.width,starCanvas.height);
--starCtx.fillStyle="white";
--
--stars.forEach(star=>{
--
--starCtx.beginPath();
--starCtx.arc(star.x,star.y,star.r,0,Math.PI*2);
--starCtx.fill();
--
--star.y+=star.s;
--
--if(star.y>starCanvas.height){
--star.y=0;
--star.x=Math.random()*starCanvas.width;
--}
--
--});
--
--requestAnimationFrame(drawStars);
--}
--drawStars();
--
--/* Fireworks */
--const canvas=document.getElementById("fireworks");
--const ctx=canvas.getContext("2d");
--
--function resize(){
--canvas.width=window.innerWidth;
--canvas.height=window.innerHeight;
--}
--resize();
--window.addEventListener("resize",resize);
--
--class Particle{
--constructor(x,y,c){
--this.x=x;this.y=y;this.c=c;
--this.r=2;this.l=100;
--this.vx=(Math.random()-0.5)*6;
--this.vy=(Math.random()-0.5)*6;
--}
--draw(){
--ctx.beginPath();
--ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
--ctx.fillStyle=this.c;
--ctx.fill();
--}
--update(){
--this.x+=this.vx;
--this.y+=this.vy;
--this.l--;
--this.r*=0.98;
--}
--}
--
--let particles=[];
--
--function explode(x,y){
--const col=["#ff4d6d","#ffd166","#fff","#ff9a9e"];
--for(let i=0;i<40;i++){
--particles.push(new Particle(x,y,col[Math.floor(Math.random()*4)]));
--}
--}
--
--setInterval(()=>{
--explode(Math.random()*canvas.width,Math.random()*canvas.height/2);
--},2000);
--
--document.addEventListener("click",e=>{
--explode(e.clientX,e.clientY);
--});
--
--function animate(){
--ctx.clearRect(0,0,canvas.width,canvas.height);
--
--particles.forEach((p,i)=>{
--p.update();p.draw();
--if(p.l<=0)particles.splice(i,1);
--});
--
--requestAnimationFrame(animate);
--}
--animate();
--
--/* Hearts */
--function createHeart(){
--const h=document.createElement("div");
--h.className="heart";
--h.innerHTML="❤️";
--h.style.left=Math.random()*100+"vw";
--h.style.animationDuration=(3+Math.random()*4)+"s";
--document.body.appendChild(h);
--setTimeout(()=>h.remove(),6000);
--}
--setInterval(createHeart,300);
--
--/* Petals */
--function createPetal(){
--const p=document.createElement("div");
--p.className="petal";
--p.innerHTML="🌸";
--p.style.left=Math.random()*100+"vw";
--p.style.animationDuration=(5+Math.random()*5)+"s";
--p.style.opacity=Math.random();
--document.body.appendChild(p);
--setTimeout(()=>p.remove(),10000);
--}
--setInterval(createPetal,400);
--
--/* Notification */
--setTimeout(()=>{
--document.getElementById("loveNote").classList.add("show");
--},3000);
--
--function openLoveNote(){
--document.getElementById("loveNote").classList.remove("show");
--alert("💌 My dearest Bhavani,\nYou are my heartbeat ❤️");
--explode(canvas.width/2,canvas.height/4);
--}
--
--/* Timer (CHANGE DATE) */
--const startDate=new Date("2020-11-25");
--
--function updateTimer(){
--const now=new Date();
--const diff=now-startDate;
--const days=Math.floor(diff/(1000*60*60*24));
--document.getElementById("timer").innerHTML=
--"💞 Together for "+days+" days";
--}
--setInterval(updateTimer,1000);
--updateTimer();
--
--/* Typing */
--const loveMessage=
--"You are my happiness, my peace, and my forever. Every heartbeat of mine belongs to you, Bhavani 💖";
--
--let typeIndex=0;
--
--function typeText(){
--if(typeIndex<loveMessage.length){
--document.getElementById("typingText").innerHTML+=loveMessage.charAt(typeIndex);
--typeIndex++;
--setTimeout(typeText,60);
--}
--}
--setTimeout(typeText,2000);
--
--/* Beat Sync */
--const music=document.getElementById("bgMusic");
--const app=document.querySelector(".app");
--
--music.addEventListener("play",()=>{
--app.classList.add("beat");
--});
--music.addEventListener("pause",()=>{
--app.classList.remove("beat");
--});
--
--/* Surprise */
--function showSurprise(){
--alert("💖 You are my forever, Bhavani 😘❤️");
--explode(canvas.width/2,canvas.height/2);
--}
--
--/* Proposal */
--function showProposal(){
--document.getElementById("proposal").style.display="block";
--explode(canvas.width/2,canvas.height/3);
--}
--
--function closeProposal(){
--document.getElementById("proposal").style.display="none";
--alert("😍 I Love You Forever 💖");
--explode(canvas.width/2,canvas.height/2);
--}
--
--/* Quiz */
--let qIndex=0;
--
--const quiz=[
--{q:"When did I fall in love with you? ❤️",a:["First day 😍","Later 💕","Always 💖"],c:3},
--{q:"What do I love most? 💫",a:["Smile 😊","Heart ❤️","Everything 😘"],c:3},
--{q:"You are my...? 💍",a:["Wife 💕","Friend 😍","Forever ❤️"],c:3}
--];
--
--function openQuiz(){
--qIndex=0;
--document.getElementById("quiz").style.display="block";
--showQuestion();
--explode(canvas.width/2,canvas.height/3);
--}
--
--function showQuestion(){
--const q=quiz[qIndex];
--question.innerText=q.q;
--a1.innerText=q.a[0];
--a2.innerText=q.a[1];
--a3.innerText=q.a[2];
--}
--
--function answer(n){
--if(n===quiz[qIndex].c){
--explode(Math.random()*canvas.width,Math.random()*canvas.height/2);
--}
--qIndex++;
--
--if(qIndex<quiz.length){
--showQuestion();
--}else{
--document.getElementById("quiz").style.display="none";
--alert("🎉 You won my heart forever ❤️😘");
--explode(canvas.width/2,canvas.height/2);
--}
--}
--
--/* Chat */
--const chats=[
--{from:"me",text:"Hey Bhavani ❤️"},
--{from:"her",text:"Hello 😘"},
--{from:"me",text:"Do you know how much I love you? 💖"},
--{from:"her",text:"More than anything 😍"},
--{from:"me",text:"You are my forever 🥹❤️"},
--{from:"her",text:"Always with you 💕"},
--{from:"me",text:"Happy Valentine’s Day 🌹"},
--{from:"her",text:"Love you so much 😘💖"}
--];
--
--let chatIndex=0;
--
--function openChat(){
--
--document.getElementById("chat").style.display="block";
--document.getElementById("chatBox").innerHTML="";
--chatIndex=0;
--
--showChat();
--}
--
--function showChat(){
--
--if(chatIndex>=chats.length)return;
--
--const msg=chats[chatIndex];
--const box=document.getElementById("chatBox");
--
--const div=document.createElement("div");
--
--div.style.margin="6px 0";
--div.style.padding="8px 12px";
--div.style.borderRadius="10px";
--div.style.maxWidth="80%";
--
--if(msg.from==="me"){
--div.style.background="#dcf8c6";
--div.style.marginLeft="auto";
--div.style.color="#000";
--}else{
--div.style.background="#333";
--div.style.color="#fff";
--}
--
--div.innerText=msg.text;
--
--box.appendChild(div);
--box.scrollTop=box.scrollHeight;
--
--chatIndex++;
--
--setTimeout(showChat,1000);
--}
--
--function closeChat(){
--document.getElementById("chat").style.display="none";
--}
--
--</script>
--
-+  <header>
-+    <div class="container nav">
-+      <div class="brand">🦷 BrightSmile Dental Clinic</div>
-+      <nav class="nav-links" aria-label="Main navigation">
-+        <a href="#services">Services</a>
-+        <a href="#about">About</a>
-+        <a href="#hours">Hours</a>
-+        <a href="#contact">Contact</a>
-+      </nav>
-+    </div>
-+  </header>
-+
-+  <main>
-+    <section class="hero">
-+      <div class="container hero-grid">
-+        <div>
-+          <h1>Healthy, confident smiles for the whole family.</h1>
-+          <p class="lead">At BrightSmile Dental Clinic, we provide gentle and modern dental care in a calm, friendly environment.</p>
-+          <div class="cta-row">
-+            <a class="btn btn-primary" href="#contact">Book Appointment</a>
-+            <a class="btn btn-secondary" href="tel:+15551234567">Call: (555) 123-4567</a>
-+          </div>
-+        </div>
-+        <aside class="hero-card" aria-label="Clinic highlights">
-+          <h3>Why choose us?</h3>
-+          <ul class="list">
-+            <li>Experienced dentists and caring staff</li>
-+            <li>Digital X-rays and modern equipment</li>
-+            <li>Flexible scheduling, including Saturdays</li>
-+            <li>Personalized treatment plans</li>
-+          </ul>
-+        </aside>
-+      </div>
-+    </section>
-+
-+    <section class="section" id="services">
-+      <div class="container">
-+        <h2>Our Services</h2>
-+        <div class="services">
-+          <article class="card">
-+            <h3>General Dentistry</h3>
-+            <p>Routine checkups, dental cleanings, fillings, and preventive care for all ages.</p>
-+          </article>
-+          <article class="card">
-+            <h3>Cosmetic Dentistry</h3>
-+            <p>Teeth whitening, veneers, and smile makeovers to help you look and feel your best.</p>
-+          </article>
-+          <article class="card">
-+            <h3>Restorative Care</h3>
-+            <p>Crowns, bridges, and implants designed to restore function, strength, and confidence.</p>
-+          </article>
-+        </div>
-+      </div>
-+    </section>
-+
-+    <section class="section" id="about">
-+      <div class="container about-grid">
-+        <article class="card">
-+          <h2>About the Clinic</h2>
-+          <p>BrightSmile has served the community for over 10 years. Our mission is to deliver affordable, high-quality dental care with honesty and compassion.</p>
-+          <p>We welcome children, adults, and seniors, and we work closely with each patient to create a treatment plan that suits their goals and budget.</p>
-+        </article>
-+        <article class="card" id="hours">
-+          <h2>Opening Hours</h2>
-+          <table class="hours" aria-label="Opening hours table">
-+            <tr><td>Monday - Friday</td><td>9:00 AM - 6:00 PM</td></tr>
-+            <tr><td>Saturday</td><td>9:00 AM - 2:00 PM</td></tr>
-+            <tr><td>Sunday</td><td>Closed</td></tr>
-+          </table>
-+          <p><strong>Address:</strong> 123 Smile Street, Happy Town</p>
-+        </article>
-+      </div>
-+    </section>
-+
-+    <section class="section" id="contact">
-+      <div class="container contact-grid">
-+        <article class="card">
-+          <h2>Contact Us</h2>
-+          <p><strong>Phone:</strong> (555) 123-4567</p>
-+          <p><strong>Email:</strong> hello@brightsmileclinic.com</p>
-+          <p>Need urgent dental care? Call us now and our team will guide you immediately.</p>
-+        </article>
-+        <article class="card">
-+          <h2>Request an Appointment</h2>
-+          <form>
-+            <label>
-+              Full Name
-+              <input type="text" name="name" placeholder="Your name" required />
-+            </label>
-+            <label>
-+              Phone Number
-+              <input type="tel" name="phone" placeholder="Your phone" required />
-+            </label>
-+            <label>
-+              Message
-+              <textarea name="message" placeholder="Tell us your preferred date/time"></textarea>
-+            </label>
-+            <button class="btn btn-primary" type="submit">Send Request</button>
-+          </form>
-+        </article>
-+      </div>
-+    </section>
-+  </main>
-+
-+  <footer>
-+    © 2026 BrightSmile Dental Clinic • Caring for your smile every day.
-+  </footer>
- </body>
- </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sri Chaitanya Dental Care</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f4f6f9;
+    }
+
+    header {
+      background: #2F80ED;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+    }
+
+    .container {
+      padding: 15px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    input, select {
+      padding: 8px;
+      margin: 5px 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 8px 12px;
+      background: #2F80ED;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    .dashboard {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .dash-box {
+      flex: 1;
+      min-width: 150px;
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .tooth-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 5px;
+    }
+
+    .tooth {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .planned { background: #4da6ff; color: white; }
+    .completed { background: #4CAF50; color: white; }
+
+  </style>
+</head>
+
+<body>
+
+<header>🦷 Sri Chaitanya Dental Care</header>
+
+<div class="container">
+
+  <!-- Dashboard -->
+  <div class="dashboard">
+    <div class="dash-box">
+      <h4>Total Patients</h4>
+      <div id="totalPatients">0</div>
+    </div>
+    <div class="dash-box">
+      <h4>Total Appointments</h4>
+      <div id="totalAppointments">0</div>
+    </div>
+    <div class="dash-box">
+      <h4>Total Revenue</h4>
+      <div>₹ <span id="totalRevenue">0</span></div>
+    </div>
+  </div>
+
+  <!-- Add Patient -->
+  <div class="card">
+    <h3>Add Patient</h3>
+    <input type="text" id="pname" placeholder="Full Name">
+    <input type="text" id="pphone" placeholder="Phone">
+    <input type="number" id="page" placeholder="Age">
+    <button onclick="addPatient()">Add Patient</button>
+  </div>
+
+  <!-- Book Appointment -->
+  <div class="card">
+    <h3>Book Appointment</h3>
+    <select id="patientSelect"></select>
+    <input type="datetime-local" id="apptTime">
+    <input type="number" id="amount" placeholder="Consultation Fee">
+    <button onclick="addAppointment()">Book Appointment</button>
+  </div>
+
+  <!-- Patients Table -->
+  <div class="card">
+    <h3>Patients</h3>
+    <table id="patientTable">
+      <tr><th>Name</th><th>Phone</th><th>Age</th></tr>
+    </table>
+  </div>
+
+  <!-- Appointments Table -->
+  <div class="card">
+    <h3>Appointments</h3>
+    <table id="appointmentTable">
+      <tr><th>Patient</th><th>Date & Time</th><th>Amount</th></tr>
+    </table>
+  </div>
+
+  <!-- Dental Chart -->
+  <div class="card">
+    <h3>Dental Chart (Click Tooth)</h3>
+    <div class="tooth-grid" id="toothGrid"></div>
+  </div>
+
+</div>
+
+<script>
+
+let patients = JSON.parse(localStorage.getItem("patients")) || [];
+let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let treatments = JSON.parse(localStorage.getItem("treatments")) || {};
+
+const teeth = [18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,
+               48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38];
+
+function saveData() {
+  localStorage.setItem("patients", JSON.stringify(patients));
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+  localStorage.setItem("treatments", JSON.stringify(treatments));
+}
+
+function updateDashboard() {
+  document.getElementById("totalPatients").innerText = patients.length;
+  document.getElementById("totalAppointments").innerText = appointments.length;
+
+  let total = appointments.reduce((sum, a) => sum + Number(a.amount || 0), 0);
+  document.getElementById("totalRevenue").innerText = total;
+}
+
+function renderPatients() {
+  let table = document.getElementById("patientTable");
+  let select = document.getElementById("patientSelect");
+
+  table.innerHTML = "<tr><th>Name</th><th>Phone</th><th>Age</th></tr>";
+  select.innerHTML = "";
+
+  patients.forEach((p, index) => {
+    table.innerHTML += `<tr><td>${p.name}</td><td>${p.phone}</td><td>${p.age}</td></tr>`;
+    select.innerHTML += `<option value="${index}">${p.name}</option>`;
+  });
+
+  updateDashboard();
+}
+
+function renderAppointments() {
+  let table = document.getElementById("appointmentTable");
+  table.innerHTML = "<tr><th>Patient</th><th>Date & Time</th><th>Amount</th></tr>";
+
+  appointments.forEach(a => {
+    table.innerHTML += `<tr>
+      <td>${a.patient}</td>
+      <td>${new Date(a.date).toLocaleString()}</td>
+      <td>₹ ${a.amount}</td>
+    </tr>`;
+  });
+
+  updateDashboard();
+}
+
+function renderTeeth() {
+  let grid = document.getElementById("toothGrid");
+  grid.innerHTML = "";
+
+  teeth.forEach(t => {
+    let div = document.createElement("div");
+    div.className = "tooth";
+    div.innerText = t;
+
+    if (treatments[t] === "planned") div.classList.add("planned");
+    if (treatments[t] === "completed") div.classList.add("completed");
+
+    div.onclick = function() {
+      let status = prompt("Enter status: planned / completed");
+      if (status === "planned" || status === "completed") {
+        treatments[t] = status;
+        saveData();
+        renderTeeth();
+      }
+    };
+
+    grid.appendChild(div);
+  });
+}
+
+function addPatient() {
+  let name = document.getElementById("pname").value;
+  let phone = document.getElementById("pphone").value;
+  let age = document.getElementById("page").value;
+
+  if (!name || !phone) {
+    alert("Enter name and phone");
+    return;
+  }
+
+  patients.push({ name, phone, age });
+  saveData();
+  renderPatients();
+
+  document.getElementById("pname").value = "";
+  document.getElementById("pphone").value = "";
+  document.getElementById("page").value = "";
+}
+
+function addAppointment() {
+  let index = document.getElementById("patientSelect").value;
+  let date = document.getElementById("apptTime").value;
+  let amount = document.getElementById("amount").value;
+
+  if (!date) {
+    alert("Select date & time");
+    return;
+  }
+
+  appointments.push({
+    patient: patients[index].name,
+    date: date,
+    amount: amount
+  });
+
+  saveData();
+  renderAppointments();
+}
+
+renderPatients();
+renderAppointments();
+renderTeeth();
+
+</script>
+
+</body>
+</html>

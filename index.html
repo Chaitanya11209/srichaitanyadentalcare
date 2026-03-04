@@ -5,18 +5,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sri Chaitanya Dental Care</title>
+<title>Sri Chaitanya Dental Care - Appointment</title>
 
 <style>
 
 body{
 font-family:Arial;
-margin:0;
 background:#f4f6f9;
+margin:0;
 text-align:center;
 }
-
-/* HEADER */
 
 .header{
 background:#1565c0;
@@ -24,87 +22,41 @@ color:white;
 padding:20px;
 }
 
-/* MAIN BUTTON */
-
-.book-btn{
+.container{
 margin-top:40px;
-padding:15px 30px;
-font-size:18px;
-background:#4caf50;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
 }
 
-/* POPUP BACKGROUND */
-
-.popup-bg{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-justify-content:center;
-align-items:center;
-}
-
-/* POPUP BOX */
-
-.popup{
-background:white;
-padding:20px;
-border-radius:10px;
-width:320px;
-text-align:left;
-}
-
-.popup h3{
-margin-top:0;
-}
-
-/* INPUTS */
-
-.popup input,
-.popup select{
-width:100%;
+input,select{
+width:260px;
 padding:10px;
-margin:8px 0;
+margin:8px;
 border:1px solid #ccc;
 border-radius:5px;
 }
 
-/* BUTTONS */
-
-.popup button{
-padding:10px;
-border:none;
-cursor:pointer;
-margin-top:10px;
-border-radius:5px;
-}
-
-.send{
+button{
+padding:12px 25px;
 background:#25D366;
+border:none;
 color:white;
-width:100%;
+font-size:16px;
+cursor:pointer;
+border-radius:5px;
+margin-top:10px;
 }
 
-.cancel{
-background:#ccc;
-width:100%;
+button:hover{
+background:#20b858;
 }
 
-/* MOBILE */
-
-@media(max-width:600px){
-
-.popup{
-width:90%;
+.calendar-btn{
+background:#ff9800;
 }
 
+.footer{
+margin-top:40px;
+color:#777;
+font-size:14px;
 }
 
 </style>
@@ -116,15 +68,7 @@ width:90%;
 <h2>🦷 Sri Chaitanya Dental Care</h2>
 </div>
 
-<h3>Online Appointment Booking</h3>
-
-<button class="book-btn" onclick="openPopup()">Book Appointment</button>
-
-<!-- POPUP -->
-
-<div id="popupBg" class="popup-bg">
-
-<div class="popup">
+<div class="container">
 
 <h3>Book Appointment</h3>
 
@@ -133,43 +77,44 @@ width:90%;
 <option value="Existing Patient">Existing Patient</option>
 </select>
 
+<br>
+
 <input id="name" placeholder="Patient Name">
+
+<br>
 
 <input id="phone" placeholder="Phone Number">
 
+<br>
+
 <input id="treatment" placeholder="Treatment">
+
+<br>
 
 <input type="datetime-local" id="time">
 
-<button class="send" onclick="sendWhatsApp()">Send via WhatsApp</button>
+<br><br>
 
-<button class="cancel" onclick="closePopup()">Cancel</button>
+<button onclick="sendWhatsApp()">Send Appointment to Clinic</button>
+
+<br>
+
+<button class="calendar-btn" onclick="addCalendar()">Add to Google Calendar</button>
 
 </div>
 
+<div class="footer">
+Online WhatsApp Appointment Booking
 </div>
 
 <script>
 
-/* OPEN POPUP */
+/* CHANGE THIS NUMBER TO YOUR CLINIC WHATSAPP */
 
-function openPopup(){
+let clinicNumber="91XXXXXXXXXX"
 
-document.getElementById("popupBg").style.display="flex"
 
-}
-
-/* CLOSE POPUP */
-
-function closePopup(){
-
-document.getElementById("popupBg").style.display="none"
-
-}
-
-/* SEND WHATSAPP MESSAGE */
-
-function sendWhatsApp(){
+function getFormData(){
 
 let type=document.getElementById("patientType").value
 let name=document.getElementById("name").value
@@ -181,30 +126,74 @@ if(!name || !phone){
 
 alert("Please enter patient name and phone number")
 
-return
+return null
 
 }
 
 let date=new Date(time).toLocaleString()
 
+return {type,name,phone,treatment,time,date}
+
+}
+
+
+/* SEND MESSAGE TO CLINIC WHATSAPP */
+
+function sendWhatsApp(){
+
+let data=getFormData()
+
+if(!data) return
+
 let message=
-`🦷 Sri Chaitanya Dental Care
+`🦷 Sri Chaitanya Dental Care Appointment
 
-Patient Type: ${type}
+Patient Type: ${data.type}
 
-Patient Name: ${name}
+Patient Name: ${data.name}
 
-Treatment: ${treatment}
+Patient Phone: ${data.phone}
 
-Appointment Time: ${date}
+Treatment: ${data.treatment}
 
-Please confirm your visit.`
+Preferred Time: ${data.date}`
 
-let url=`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`
+let url=`https://wa.me/${clinicNumber}?text=${encodeURIComponent(message)}`
 
-window.open(url,"_blank")
+window.open(url)
 
-closePopup()
+}
+
+
+/* ADD GOOGLE CALENDAR EVENT */
+
+function addCalendar(){
+
+let data=getFormData()
+
+if(!data) return
+
+let start=new Date(data.time)
+
+let end=new Date(start.getTime()+30*60000)
+
+function formatDate(d){
+
+return d.toISOString().replace(/-|:|\.\d\d\d/g,"")
+
+}
+
+let url="https://calendar.google.com/calendar/render?action=TEMPLATE"
+
+url+="&text=Dental Appointment - "+encodeURIComponent(data.name)
+
+url+="&dates="+formatDate(start)+"/"+formatDate(end)
+
+url+="&details="+encodeURIComponent("Treatment: "+data.treatment)
+
+url+="&location=Sri Chaitanya Dental Care"
+
+window.open(url)
 
 }
 

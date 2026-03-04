@@ -7,142 +7,102 @@
 
 <title>Sri Chaitanya Dental Care</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <style>
 
 body{
 font-family:Arial;
 margin:0;
 background:#f4f6f9;
-}
-
-.login{
-max-width:320px;
-margin:120px auto;
 text-align:center;
 }
 
-.login input{
-width:100%;
-padding:10px;
-margin:10px 0;
-}
+/* HEADER */
 
-.layout{
-display:flex;
-min-height:100vh;
-}
-
-.sidebar{
-width:220px;
+.header{
 background:#1565c0;
 color:white;
 padding:20px;
 }
 
-.sidebar button{
-display:block;
-width:100%;
-margin:10px 0;
-padding:10px;
+/* MAIN BUTTON */
+
+.book-btn{
+margin-top:40px;
+padding:15px 30px;
+font-size:18px;
+background:#4caf50;
+color:white;
 border:none;
-cursor:pointer;
-}
-
-.content{
-flex:1;
-padding:20px;
-overflow:auto;
-}
-
-.hidden{
-display:none;
-}
-
-.cards{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.card{
-background:white;
-padding:20px;
 border-radius:8px;
-box-shadow:0 3px 8px rgba(0,0,0,0.15);
-width:200px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:white;
-}
-
-th,td{
-border:1px solid #ddd;
-padding:10px;
-}
-
-.calendar{
-display:grid;
-grid-template-columns:repeat(7,1fr);
-gap:5px;
-margin-top:20px;
-}
-
-.calendar div{
-background:white;
-border:1px solid #ddd;
-padding:8px;
-min-height:70px;
-font-size:12px;
-}
-
-.teeth-grid{
-display:grid;
-grid-template-columns:repeat(8,1fr);
-gap:10px;
-margin-top:20px;
-}
-
-.teeth-grid button{
-height:45px;
-border:none;
-border-radius:6px;
 cursor:pointer;
 }
 
-.healthy{background:#4caf50;color:white}
-.cavity{background:#e53935;color:white}
-.filling{background:#2196f3;color:white}
-.rct{background:#8e24aa;color:white}
+/* POPUP BACKGROUND */
 
-@media(max-width:768px){
-
-.layout{
-flex-direction:column;
-}
-
-.sidebar{
+.popup-bg{
+position:fixed;
+top:0;
+left:0;
 width:100%;
-display:flex;
-overflow:auto;
-gap:10px;
+height:100%;
+background:rgba(0,0,0,0.5);
+display:none;
+justify-content:center;
+align-items:center;
 }
 
-.sidebar button{
-flex:1;
-white-space:nowrap;
+/* POPUP BOX */
+
+.popup{
+background:white;
+padding:20px;
+border-radius:10px;
+width:320px;
+text-align:left;
 }
 
-.card{
+.popup h3{
+margin-top:0;
+}
+
+/* INPUTS */
+
+.popup input,
+.popup select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+/* BUTTONS */
+
+.popup button{
+padding:10px;
+border:none;
+cursor:pointer;
+margin-top:10px;
+border-radius:5px;
+}
+
+.send{
+background:#25D366;
+color:white;
 width:100%;
 }
 
-.teeth-grid{
-grid-template-columns:repeat(4,1fr);
+.cancel{
+background:#ccc;
+width:100%;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.popup{
+width:90%;
 }
 
 }
@@ -152,371 +112,99 @@ grid-template-columns:repeat(4,1fr);
 
 <body>
 
-<div id="loginPage" class="login">
-
+<div class="header">
 <h2>🦷 Sri Chaitanya Dental Care</h2>
-
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
-<p id="loginError"></p>
-
 </div>
 
-<div id="mainApp" class="hidden">
+<h3>Online Appointment Booking</h3>
 
-<div class="layout">
+<button class="book-btn" onclick="openPopup()">Book Appointment</button>
 
-<div class="sidebar">
+<!-- POPUP -->
 
-<h3>Clinic</h3>
+<div id="popupBg" class="popup-bg">
 
-<button onclick="showPage('dashboard')">Dashboard</button>
-<button onclick="showPage('patients')">Patients</button>
-<button onclick="showPage('appointments')">Appointments</button>
-<button onclick="showPage('calendar')">Calendar</button>
-<button onclick="showPage('dental')">Dental Chart</button>
-<button onclick="showPage('reports')">Reports</button>
-<button onclick="logout()">Logout</button>
+<div class="popup">
 
-</div>
+<h3>Book Appointment</h3>
 
-<div class="content">
-
-<div id="dashboardPage">
-
-<h2>Dashboard</h2>
-
-<div class="cards">
-
-<div class="card">
-<h3>Total Patients</h3>
-<p id="totalPatients">0</p>
-</div>
-
-<div class="card">
-<h3>Today's Appointments</h3>
-<p id="todayAppointments">0</p>
-</div>
-
-<div class="card">
-<h3>Today's Revenue</h3>
-<p id="todayRevenue">₹0</p>
-</div>
-
-</div>
-
-</div>
-
-<div id="patientsPage" class="hidden">
-
-<h2>Patients</h2>
-
-<input id="patientName" placeholder="Name">
-<input id="patientPhone" placeholder="Phone">
-<input id="patientAge" placeholder="Age">
-
-<button onclick="addPatient()">Add Patient</button>
-
-<table>
-
-<thead>
-<tr>
-<th>Name</th>
-<th>Phone</th>
-<th>Age</th>
-<th>Delete</th>
-</tr>
-</thead>
-
-<tbody id="patientTable"></tbody>
-
-</table>
-
-</div>
-
-<div id="appointmentsPage" class="hidden">
-
-<h2>Appointments</h2>
-
-<select id="appointmentPatient"></select>
-
-<input type="datetime-local" id="appointmentTime">
-
-<input id="treatmentName" placeholder="Treatment">
-
-<input id="treatmentAmount" placeholder="Amount">
-
-<button onclick="addAppointment()">Book</button>
-
-<table>
-
-<thead>
-<tr>
-<th>Patient</th>
-<th>Date</th>
-<th>Treatment</th>
-<th>Amount</th>
-<th>Invoice</th>
-<th>WhatsApp</th>
-</tr>
-</thead>
-
-<tbody id="appointmentTable"></tbody>
-
-</table>
-
-</div>
-
-<div id="calendarPage" class="hidden">
-
-<h2>Appointment Calendar</h2>
-
-<div id="calendar" class="calendar"></div>
-
-</div>
-
-<div id="dentalPage" class="hidden">
-
-<h2>Dental Chart</h2>
-
-<select id="dentalPatient"></select>
-
-<select id="toothType">
-<option value="healthy">Healthy</option>
-<option value="cavity">Cavity</option>
-<option value="filling">Filling</option>
-<option value="rct">RCT</option>
+<select id="patientType">
+<option value="New Patient">New Patient</option>
+<option value="Existing Patient">Existing Patient</option>
 </select>
 
-<div id="teethGrid" class="teeth-grid"></div>
+<input id="name" placeholder="Patient Name">
+
+<input id="phone" placeholder="Phone Number">
+
+<input id="treatment" placeholder="Treatment">
+
+<input type="datetime-local" id="time">
+
+<button class="send" onclick="sendWhatsApp()">Send via WhatsApp</button>
+
+<button class="cancel" onclick="closePopup()">Cancel</button>
 
 </div>
 
-<div id="reportsPage" class="hidden">
-
-<h2>Revenue Report</h2>
-
-<button onclick="generateReport()">Generate</button>
-
-<div id="report"></div>
-
-</div>
-
-</div>
-</div>
 </div>
 
 <script>
 
-let patients=JSON.parse(localStorage.getItem("patients"))||[]
-let appointments=JSON.parse(localStorage.getItem("appointments"))||[]
-let dental=JSON.parse(localStorage.getItem("dental"))||{}
+/* OPEN POPUP */
 
-function save(){
-localStorage.setItem("patients",JSON.stringify(patients))
-localStorage.setItem("appointments",JSON.stringify(appointments))
-localStorage.setItem("dental",JSON.stringify(dental))
-}
+function openPopup(){
 
-function login(){
-if(username.value=="admin" && password.value=="1234"){
-loginPage.style.display="none"
-mainApp.style.display="block"
-init()
-}else{
-loginError.innerText="Invalid Login"
-}
-}
-
-function logout(){
-location.reload()
-}
-
-function init(){
-renderPatients()
-renderAppointments()
-updateDropdowns()
-buildTeeth()
-updateDashboard()
-}
-
-function showPage(p){
-document.querySelectorAll(".content > div").forEach(d=>d.classList.add("hidden"))
-document.getElementById(p+"Page").classList.remove("hidden")
-updateDashboard()
-}
-
-function addPatient(){
-let name=patientName.value
-let phone=patientPhone.value
-let age=patientAge.value
-
-patients.push({name,phone,age})
-save()
-
-renderPatients()
-updateDropdowns()
-}
-
-function renderPatients(){
-patientTable.innerHTML=""
-
-patients.forEach((p,i)=>{
-patientTable.innerHTML+=`
-<tr>
-<td>${p.name}</td>
-<td>${p.phone}</td>
-<td>${p.age}</td>
-<td><button onclick="deletePatient(${i})">❌</button></td>
-</tr>
-`
-})
-
-totalPatients.innerText=patients.length
-}
-
-function deletePatient(i){
-patients.splice(i,1)
-save()
-renderPatients()
-updateDropdowns()
-}
-
-function updateDropdowns(){
-
-appointmentPatient.innerHTML=""
-dentalPatient.innerHTML=""
-
-patients.forEach((p,i)=>{
-
-appointmentPatient.innerHTML+=`<option value="${i}">${p.name}</option>`
-dentalPatient.innerHTML+=`<option value="${i}">${p.name}</option>`
-
-})
+document.getElementById("popupBg").style.display="flex"
 
 }
 
-function addAppointment(){
+/* CLOSE POPUP */
 
-let p=patients[appointmentPatient.value]
+function closePopup(){
 
-appointments.push({
-
-patient:p.name,
-phone:p.phone,
-time:appointmentTime.value,
-treatment:treatmentName.value,
-amount:treatmentAmount.value
-
-})
-
-save()
-renderAppointments()
-}
-
-function renderAppointments(){
-
-appointmentTable.innerHTML=""
-
-appointments.forEach((a,i)=>{
-
-appointmentTable.innerHTML+=`
-
-<tr>
-<td>${a.patient}</td>
-<td>${new Date(a.time).toLocaleString()}</td>
-<td>${a.treatment}</td>
-<td>₹${a.amount}</td>
-<td><button onclick="invoice(${i})">🧾</button></td>
-<td><button onclick="wa('${a.phone}','${a.treatment}','${a.amount}')">📱</button></td>
-</tr>
-
-`
-
-})
+document.getElementById("popupBg").style.display="none"
 
 }
 
-function invoice(i){
+/* SEND WHATSAPP MESSAGE */
 
-let a=appointments[i]
+function sendWhatsApp(){
 
-let w=window.open()
+let type=document.getElementById("patientType").value
+let name=document.getElementById("name").value
+let phone=document.getElementById("phone").value
+let treatment=document.getElementById("treatment").value
+let time=document.getElementById("time").value
 
-w.document.write(`
+if(!name || !phone){
 
-<h2>Sri Chaitanya Dental Care</h2>
-<p>Patient: ${a.patient}</p>
-<p>Treatment: ${a.treatment}</p>
-<p>Amount: ₹${a.amount}</p>
-<button onclick="window.print()">Print</button>
+alert("Please enter patient name and phone number")
 
-`)
-
-}
-
-function wa(phone,treat,amt){
-
-let msg=`Dental Treatment: ${treat} Amount ₹${amt}`
-
-window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`)
+return
 
 }
 
-function updateDashboard(){
+let date=new Date(time).toLocaleString()
 
-let today=new Date().toDateString()
+let message=
+`🦷 Sri Chaitanya Dental Care
 
-let todays=appointments.filter(a=>new Date(a.time).toDateString()==today)
+Patient Type: ${type}
 
-todayAppointments.innerText=todays.length
+Patient Name: ${name}
 
-let revenue=0
+Treatment: ${treatment}
 
-todays.forEach(a=>revenue+=Number(a.amount))
+Appointment Time: ${date}
 
-todayRevenue.innerText="₹"+revenue
+Please confirm your visit.`
 
-}
+let url=`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`
 
-function generateReport(){
+window.open(url,"_blank")
 
-let total=0
-
-appointments.forEach(a=>total+=Number(a.amount))
-
-report.innerHTML="<h3>Total Revenue ₹"+total+"</h3>"
-
-}
-
-function buildTeeth(){
-
-let teeth=[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,
-48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]
-
-teeth.forEach(t=>{
-
-let btn=document.createElement("button")
-
-btn.innerText=t
-btn.onclick=()=>treat(t)
-
-teethGrid.appendChild(btn)
-
-})
-
-}
-
-function treat(t){
-
-let type=toothType.value
-
-dental[t]=type
-
-save()
+closePopup()
 
 }
 

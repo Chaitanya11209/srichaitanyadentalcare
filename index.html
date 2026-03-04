@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Sri Chaitanya Dental Care</title>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -14,7 +18,7 @@ background:#f4f6f9;
 }
 
 .login{
-width:320px;
+max-width:320px;
 margin:120px auto;
 text-align:center;
 }
@@ -27,7 +31,7 @@ margin:10px 0;
 
 .layout{
 display:flex;
-height:100vh;
+min-height:100vh;
 }
 
 .sidebar{
@@ -52,18 +56,21 @@ padding:20px;
 overflow:auto;
 }
 
-.hidden{display:none}
+.hidden{
+display:none;
+}
 
 .cards{
 display:flex;
 gap:20px;
+flex-wrap:wrap;
 }
 
 .card{
 background:white;
 padding:20px;
 border-radius:8px;
-box-shadow:0 3px 8px rgba(0,0,0,0.2);
+box-shadow:0 3px 8px rgba(0,0,0,0.15);
 width:200px;
 }
 
@@ -95,7 +102,7 @@ font-size:12px;
 
 .teeth-grid{
 display:grid;
-grid-template-columns:repeat(8,50px);
+grid-template-columns:repeat(8,1fr);
 gap:10px;
 margin-top:20px;
 }
@@ -112,17 +119,38 @@ cursor:pointer;
 .filling{background:#2196f3;color:white}
 .rct{background:#8e24aa;color:white}
 
-textarea{
+@media(max-width:768px){
+
+.layout{
+flex-direction:column;
+}
+
+.sidebar{
 width:100%;
-height:120px;
+display:flex;
+overflow:auto;
+gap:10px;
+}
+
+.sidebar button{
+flex:1;
+white-space:nowrap;
+}
+
+.card{
+width:100%;
+}
+
+.teeth-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
 }
 
 </style>
 </head>
 
 <body>
-
-<!-- LOGIN -->
 
 <div id="loginPage" class="login">
 
@@ -137,8 +165,6 @@ height:120px;
 
 </div>
 
-<!-- MAIN APP -->
-
 <div id="mainApp" class="hidden">
 
 <div class="layout">
@@ -152,15 +178,12 @@ height:120px;
 <button onclick="showPage('appointments')">Appointments</button>
 <button onclick="showPage('calendar')">Calendar</button>
 <button onclick="showPage('dental')">Dental Chart</button>
-<button onclick="showPage('prescription')">Prescription</button>
 <button onclick="showPage('reports')">Reports</button>
 <button onclick="logout()">Logout</button>
 
 </div>
 
 <div class="content">
-
-<!-- DASHBOARD -->
 
 <div id="dashboardPage">
 
@@ -185,13 +208,7 @@ height:120px;
 
 </div>
 
-<br>
-
-<canvas id="revenueChart"></canvas>
-
 </div>
-
-<!-- PATIENTS -->
 
 <div id="patientsPage" class="hidden">
 
@@ -219,8 +236,6 @@ height:120px;
 </table>
 
 </div>
-
-<!-- APPOINTMENTS -->
 
 <div id="appointmentsPage" class="hidden">
 
@@ -255,8 +270,6 @@ height:120px;
 
 </div>
 
-<!-- CALENDAR -->
-
 <div id="calendarPage" class="hidden">
 
 <h2>Appointment Calendar</h2>
@@ -264,8 +277,6 @@ height:120px;
 <div id="calendar" class="calendar"></div>
 
 </div>
-
-<!-- DENTAL -->
 
 <div id="dentalPage" class="hidden">
 
@@ -283,24 +294,6 @@ height:120px;
 <div id="teethGrid" class="teeth-grid"></div>
 
 </div>
-
-<!-- PRESCRIPTION -->
-
-<div id="prescriptionPage" class="hidden">
-
-<h2>Prescription</h2>
-
-<select id="prescriptionPatient"></select>
-
-<textarea id="prescriptionText"></textarea>
-
-<br><br>
-
-<button onclick="printPrescription()">Print Prescription</button>
-
-</div>
-
-<!-- REPORTS -->
 
 <div id="reportsPage" class="hidden">
 
@@ -334,39 +327,43 @@ loginPage.style.display="none"
 mainApp.style.display="block"
 init()
 }else{
-loginError.innerText="Invalid login"
+loginError.innerText="Invalid Login"
 }
 }
 
-function logout(){ location.reload() }
+function logout(){
+location.reload()
+}
 
 function init(){
-buildTeeth()
 renderPatients()
 renderAppointments()
 updateDropdowns()
+buildTeeth()
 updateDashboard()
-buildCalendar()
 }
 
 function showPage(p){
-document.querySelectorAll(".content > div").forEach(d=>d.style.display="none")
-document.getElementById(p+"Page").style.display="block"
+document.querySelectorAll(".content > div").forEach(d=>d.classList.add("hidden"))
+document.getElementById(p+"Page").classList.remove("hidden")
+updateDashboard()
 }
 
 function addPatient(){
-patients.push({
-name:patientName.value,
-phone:patientPhone.value,
-age:patientAge.value
-})
+let name=patientName.value
+let phone=patientPhone.value
+let age=patientAge.value
+
+patients.push({name,phone,age})
 save()
+
 renderPatients()
 updateDropdowns()
 }
 
 function renderPatients(){
 patientTable.innerHTML=""
+
 patients.forEach((p,i)=>{
 patientTable.innerHTML+=`
 <tr>
@@ -374,8 +371,10 @@ patientTable.innerHTML+=`
 <td>${p.phone}</td>
 <td>${p.age}</td>
 <td><button onclick="deletePatient(${i})">❌</button></td>
-</tr>`
+</tr>
+`
 })
+
 totalPatients.innerText=patients.length
 }
 
@@ -383,38 +382,49 @@ function deletePatient(i){
 patients.splice(i,1)
 save()
 renderPatients()
+updateDropdowns()
 }
 
 function updateDropdowns(){
+
 appointmentPatient.innerHTML=""
 dentalPatient.innerHTML=""
-prescriptionPatient.innerHTML=""
+
 patients.forEach((p,i)=>{
+
 appointmentPatient.innerHTML+=`<option value="${i}">${p.name}</option>`
 dentalPatient.innerHTML+=`<option value="${i}">${p.name}</option>`
-prescriptionPatient.innerHTML+=`<option value="${i}">${p.name}</option>`
+
 })
+
 }
 
 function addAppointment(){
+
 let p=patients[appointmentPatient.value]
+
 appointments.push({
+
 patient:p.name,
 phone:p.phone,
 time:appointmentTime.value,
 treatment:treatmentName.value,
 amount:treatmentAmount.value
+
 })
+
 save()
 renderAppointments()
-updateDashboard()
-buildCalendar()
 }
 
 function renderAppointments(){
+
 appointmentTable.innerHTML=""
+
 appointments.forEach((a,i)=>{
+
 appointmentTable.innerHTML+=`
+
 <tr>
 <td>${a.patient}</td>
 <td>${new Date(a.time).toLocaleString()}</td>
@@ -422,97 +432,95 @@ appointmentTable.innerHTML+=`
 <td>₹${a.amount}</td>
 <td><button onclick="invoice(${i})">🧾</button></td>
 <td><button onclick="wa('${a.phone}','${a.treatment}','${a.amount}')">📱</button></td>
-</tr>`
+</tr>
+
+`
+
 })
+
 }
 
 function invoice(i){
+
 let a=appointments[i]
+
 let w=window.open()
+
 w.document.write(`
+
 <h2>Sri Chaitanya Dental Care</h2>
 <p>Patient: ${a.patient}</p>
 <p>Treatment: ${a.treatment}</p>
 <p>Amount: ₹${a.amount}</p>
 <button onclick="window.print()">Print</button>
+
 `)
+
 }
 
 function wa(phone,treat,amt){
+
 let msg=`Dental Treatment: ${treat} Amount ₹${amt}`
+
 window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`)
+
 }
 
 function updateDashboard(){
+
 let today=new Date().toDateString()
+
 let todays=appointments.filter(a=>new Date(a.time).toDateString()==today)
+
 todayAppointments.innerText=todays.length
+
 let revenue=0
+
 todays.forEach(a=>revenue+=Number(a.amount))
+
 todayRevenue.innerText="₹"+revenue
-buildChart()
-}
 
-function buildChart(){
-let months=new Array(12).fill(0)
-appointments.forEach(a=>{
-let m=new Date(a.time).getMonth()
-months[m]+=Number(a.amount)
-})
-new Chart(document.getElementById("revenueChart"),{
-type:'bar',
-data:{
-labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-datasets:[{label:"Revenue",data:months}]
-}
-})
-}
-
-function buildCalendar(){
-calendar.innerHTML=""
-for(let i=1;i<=31;i++){
-let box=document.createElement("div")
-box.innerHTML="<b>"+i+"</b><br>"
-appointments.forEach(a=>{
-let d=new Date(a.time).getDate()
-if(d==i) box.innerHTML+="• "+a.patient+"<br>"
-})
-calendar.appendChild(box)
-}
-}
-
-function buildTeeth(){
-let teeth=[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,
-48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]
-teeth.forEach(t=>{
-teethGrid.innerHTML+=`<button onclick="treat(${t})">${t}</button>`
-})
-}
-
-function treat(t){
-let p=dentalPatient.value
-if(!dental[p]) dental[p]={}
-dental[p][t]=toothType.value
-save()
-}
-
-function printPrescription(){
-let p=patients[prescriptionPatient.value]
-let w=window.open()
-w.document.write(`
-<h2>Sri Chaitanya Dental Care</h2>
-<p>Patient: ${p.name}</p>
-<pre>${prescriptionText.value}</pre>
-<button onclick="window.print()">Print</button>
-`)
 }
 
 function generateReport(){
+
 let total=0
+
 appointments.forEach(a=>total+=Number(a.amount))
-report.innerHTML="Total Revenue: ₹"+total
+
+report.innerHTML="<h3>Total Revenue ₹"+total+"</h3>"
+
+}
+
+function buildTeeth(){
+
+let teeth=[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28,
+48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]
+
+teeth.forEach(t=>{
+
+let btn=document.createElement("button")
+
+btn.innerText=t
+btn.onclick=()=>treat(t)
+
+teethGrid.appendChild(btn)
+
+})
+
+}
+
+function treat(t){
+
+let type=toothType.value
+
+dental[t]=type
+
+save()
+
 }
 
 </script>
+
 </body>
 </html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Sri Chaitanya Dental Care</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<div id="loginPage" class="login">
+
+<h2>🦷 Sri Chaitanya Dental Care</h2>
+
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="loginError"></p>
+
+</div>
+
+
+<div id="mainApp" class="hidden">
+
+<div class="layout">
+
+<div class="sidebar">
+
+<h3>Clinic</h3>
+
+<button onclick="showPage('dashboard')">Dashboard</button>
+<button onclick="showPage('patients')">Patients</button>
+<button onclick="showPage('appointments')">Appointments</button>
+<button onclick="showPage('dental')">Dental Chart</button>
+<button onclick="showPage('reports')">Reports</button>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+
+<div id="dashboardPage">
+
+<h2>Dashboard</h2>
+
+<div class="cards">
+
+<div class="card">
+<h3>Total Patients</h3>
+<p id="totalPatients">0</p>
+</div>
+
+<div class="card">
+<h3>Today's Appointments</h3>
+<p id="todayAppointments">0</p>
+</div>
+
+<div class="card">
+<h3>Today's Revenue</h3>
+<p id="todayRevenue">₹0</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- PATIENTS -->
+
+<div id="patientsPage" class="hidden">
+
+<h2>Patients</h2>
+
+<input id="patientName" placeholder="Name">
+<input id="patientPhone" placeholder="Phone">
+<input id="patientAge" placeholder="Age">
+
+<button onclick="addPatient()">Add Patient</button>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Phone</th>
+<th>Age</th>
+<th>Delete</th>
+</tr>
+
+</thead>
+
+<tbody id="patientTable"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- APPOINTMENTS -->
+
+<div id="appointmentsPage" class="hidden">
+
+<h2>Appointments</h2>
+
+<select id="appointmentPatient"></select>
+
+<input type="datetime-local" id="appointmentTime">
+
+<input id="treatmentName" placeholder="Treatment">
+
+<input id="treatmentAmount" placeholder="Amount">
+
+<button onclick="addAppointment()">Book</button>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Patient</th>
+<th>Date</th>
+<th>Treatment</th>
+<th>Amount</th>
+<th>Invoice</th>
+<th>WhatsApp</th>
+</tr>
+
+</thead>
+
+<tbody id="appointmentTable"></tbody>
+
+</table>
+
+</div>
+
+
+<!-- DENTAL -->
+
+<div id="dentalPage" class="hidden">
+
+<h2>Dental Chart</h2>
+
+<select id="dentalPatient"></select>
+
+<select id="toothType">
+
+<option value="healthy">Healthy</option>
+<option value="cavity">Cavity</option>
+<option value="filling">Filling</option>
+<option value="rct">RCT</option>
+
+</select>
+
+<div id="teethGrid" class="teeth-grid"></div>
+
+</div>
+
+
+<!-- REPORTS -->
+
+<div id="reportsPage" class="hidden">
+
+<h2>Daily Report</h2>
+
+<button onclick="generateReport()">Generate</button>
+
+<div id="report"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

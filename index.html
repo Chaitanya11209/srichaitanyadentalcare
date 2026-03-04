@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sri Chaitanya Dental Care - Appointment</title>
+<title>Sri Chaitanya Dental Care</title>
 
 <style>
 
@@ -49,8 +49,8 @@ button:hover{
 background:#20b858;
 }
 
-.calendar-btn{
-background:#ff9800;
+.map-btn{
+background:#ff5722;
 }
 
 .footer{
@@ -83,7 +83,7 @@ font-size:14px;
 
 <br>
 
-<input id="phone" placeholder="Phone Number">
+<input id="phone" placeholder="Patient Phone">
 
 <br>
 
@@ -95,11 +95,11 @@ font-size:14px;
 
 <br><br>
 
-<button onclick="sendWhatsApp()">Send Appointment to Clinic</button>
+<button onclick="sendWhatsApp()">Book Appointment</button>
 
 <br>
 
-<button class="calendar-btn" onclick="addCalendar()">Add to Google Calendar</button>
+<button class="map-btn" onclick="openMap()">📍 View Clinic Location</button>
 
 </div>
 
@@ -109,9 +109,14 @@ Online WhatsApp Appointment Booking
 
 <script>
 
-/* CHANGE THIS NUMBER TO YOUR CLINIC WHATSAPP */
+/* CHANGE THESE NUMBERS */
 
-let clinicNumber="91XXXXXXXXXX"
+let doctorNumber="918277090710"
+let clinicNumber="918317575165"
+
+/* GOOGLE MAP LINK */
+
+let clinicMap="https://maps.app.goo.gl/qYiuSzNoLLMZX5Wy8"
 
 
 function getFormData(){
@@ -124,7 +129,7 @@ let time=document.getElementById("time").value
 
 if(!name || !phone){
 
-alert("Please enter patient name and phone number")
+alert("Please enter patient name and phone")
 
 return null
 
@@ -136,8 +141,7 @@ return {type,name,phone,treatment,time,date}
 
 }
 
-
-/* SEND MESSAGE TO CLINIC WHATSAPP */
+/* WHATSAPP MESSAGE */
 
 function sendWhatsApp(){
 
@@ -158,42 +162,24 @@ Treatment: ${data.treatment}
 
 Preferred Time: ${data.date}`
 
-let url=`https://wa.me/${clinicNumber}?text=${encodeURIComponent(message)}`
+let doctorURL=`https://wa.me/${doctorNumber}?text=${encodeURIComponent(message)}`
+let clinicURL=`https://wa.me/${clinicNumber}?text=${encodeURIComponent(message)}`
 
-window.open(url)
+window.open(doctorURL)
 
-}
+setTimeout(function(){
 
+window.open(clinicURL)
 
-/* ADD GOOGLE CALENDAR EVENT */
-
-function addCalendar(){
-
-let data=getFormData()
-
-if(!data) return
-
-let start=new Date(data.time)
-
-let end=new Date(start.getTime()+30*60000)
-
-function formatDate(d){
-
-return d.toISOString().replace(/-|:|\.\d\d\d/g,"")
+},1500)
 
 }
 
-let url="https://calendar.google.com/calendar/render?action=TEMPLATE"
+/* OPEN GOOGLE MAP */
 
-url+="&text=Dental Appointment - "+encodeURIComponent(data.name)
+function openMap(){
 
-url+="&dates="+formatDate(start)+"/"+formatDate(end)
-
-url+="&details="+encodeURIComponent("Treatment: "+data.treatment)
-
-url+="&location=Sri Chaitanya Dental Care"
-
-window.open(url)
+window.open(clinicMap)
 
 }
 

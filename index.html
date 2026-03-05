@@ -12,8 +12,8 @@
 body{
 font-family:Arial;
 background:#f4f6f9;
-margin:0;
 text-align:center;
+margin:0;
 }
 
 .header{
@@ -22,171 +22,440 @@ color:white;
 padding:20px;
 }
 
-.container{
-margin-top:30px;
-}
-
 input,select{
 width:260px;
 padding:10px;
 margin:8px;
-border:1px solid #ccc;
 border-radius:5px;
+border:1px solid #ccc;
 }
 
 button{
-padding:12px 25px;
+padding:8px 12px;
 border:none;
-font-size:16px;
-cursor:pointer;
 border-radius:6px;
-margin-top:10px;
+cursor:pointer;
+margin:2px;
 }
 
-.book{
-background:#25D366;
+.book{background:#25D366;color:white}
+.call{background:#2196F3;color:white}
+.map{background:#ff5722;color:white}
+
+.dashboard{
+margin-top:40px;
+background:white;
+padding:20px;
+max-width:550px;
+margin-left:auto;
+margin-right:auto;
+border-radius:8px;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+border-bottom:1px solid #eee;
+padding:10px;
+text-align:left;
+}
+
+.slot{
+font-weight:bold;
+}
+
+.phone{
+color:#555;
+font-size:13px;
+margin-top:3px;
+}
+
+.history{
+font-size:12px;
+color:#777;
+margin-top:3px;
+}
+
+.actions{
+margin-top:5px;
+}
+
+.cancel{
+background:#e53935;
 color:white;
 }
 
-.call{
+.reminder{
+background:#4caf50;
+color:white;
+}
+
+.callbtn{
 background:#2196F3;
 color:white;
 }
 
-.map{
-background:#ff5722;
-color:white;
-}
-
-button:hover{
-opacity:0.9;
-}
-
-.footer{
-margin-top:40px;
-color:#777;
-font-size:14px;
-}
-
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
 <h2>🦷 Sri Chaitanya Dental Care</h2>
-<p>Quick Appointment Booking</p>
+<p>Appointment Booking</p>
 </div>
 
-<div class="container">
-
-<h3>Book Appointment</h3>
 
 <select id="patientType">
-<option value="New Patient">New Patient</option>
-<option value="Existing Patient">Existing Patient</option>
-</select>
+<option>New Patient</option>
+<option>Existing Patient</option>
+</select><br>
 
-<br>
+<input id="name" placeholder="Patient Name"><br>
 
-<input id="name" placeholder="Patient Name">
+<input id="phone" placeholder="Phone Number" onkeyup="searchPatient()"><br>
 
-<br>
+<div id="historyPreview" style="font-size:12px;color:#777;"></div>
 
-<input id="phone" placeholder="Patient Phone">
+<select id="treatment">
+<option>Select Treatment</option>
+<option>Dental Cleaning</option>
+<option>Root Canal Treatment</option>
+<option>Dental Filling</option>
+<option>Extraction</option>
+<option>Checkup</option>
+</select><br>
 
-<br>
+<select id="slot">
+<option>Select Slot</option>
+</select><br>
 
-<input id="treatment" placeholder="Treatment (Cleaning, RCT, etc)">
+<button class="book" onclick="book()">Book Appointment</button><br>
+<button class="call" onclick="callClinic()">📞 Call Clinic</button><br>
+<button class="map" onclick="openMap()">📍 Location</button>
 
-<br>
 
-<input type="datetime-local" id="time">
+<div class="dashboard">
 
-<br><br>
+<h3>Today's Appointments</h3>
 
-<button class="book" onclick="bookAppointment()">Book Appointment</button>
-
-<br>
-
-<button class="call" onclick="callClinic()">📞 Call Clinic</button>
-
-<br>
-
-<button class="map" onclick="openMap()">📍 View Clinic Location</button>
+<ul id="appointments"></ul>
 
 </div>
 
-<div class="footer">
-Online WhatsApp Appointment Booking
-</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
 
 <script>
 
-/* CHANGE THESE NUMBERS */
+/* FIREBASE CONFIG */
 
-let doctorNumber="91XXXXXXXXXX"
-let clinicNumber="91XXXXXXXXXX"
+const firebaseConfig = {
 
-/* CHANGE MAP LINK */
+apiKey: "AIzaSyDeV4_XRKzhR1IFW5jo21aK87EZmKh4bCY",
+
+authDomain: "dentalbooking-66754.firebaseapp.com",
+
+databaseURL: "https://dentalbooking-66754-default-rtdb.firebaseio.com",
+
+projectId: "dentalbooking-66754",
+
+storageBucket: "dentalbooking-66754.firebasestorage.app",
+
+messagingSenderId: "668789005424",
+
+appId: "1:668789005424:web:59440a98f73271afd428b5"
+
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.database();
+
+
+
+let doctorNumber="919346099856"
+let clinicNumber="918317575165"
 
 let clinicMap="https://maps.google.com/?q=Sri+Chaitanya+Dental+Care"
 
 
-function bookAppointment(){
 
-let type=document.getElementById("patientType").value
+/* GENERATE TIME SLOTS */
+
+let slot=document.getElementById("slot")
+
+for(let h=10;h<=21;h++){
+
+for(let m=0;m<60;m+=30){
+
+let hour=h
+let minute=m.toString().padStart(2,"0")
+
+let ampm=hour>=12?"PM":"AM"
+let display=hour>12?hour-12:hour
+if(display==0)display=12
+
+let time=`${display}:${minute} ${ampm}`
+
+let opt=document.createElement("option")
+opt.text=time
+opt.value=time
+
+slot.appendChild(opt)
+
+}
+
+}
+
+
+
+/* SEARCH PATIENT */
+
+function searchPatient(){
+
+let phone=document.getElementById("phone").value
+
+db.ref("appointments").once("value",snapshot=>{
+
+let data=snapshot.val()
+
+if(!data) return
+
+let history=[]
+
+for(let k in data){
+
+if(data[k].phone===phone){
+
+document.getElementById("name").value=data[k].name
+history.push(data[k].treatment)
+
+}
+
+}
+
+if(history.length>0){
+
+document.getElementById("historyPreview").innerText="History: "+history.join(", ")
+
+}else{
+
+document.getElementById("historyPreview").innerText=""
+
+}
+
+})
+
+}
+
+
+
+/* LOAD APPOINTMENTS */
+
+db.ref("appointments").on("value",snapshot=>{
+
+let data=snapshot.val()
+
+let list=document.getElementById("appointments")
+
+list.innerHTML=""
+
+if(!data) return
+
+let options=slot.options
+
+for(let i=0;i<options.length;i++){
+options[i].disabled=false
+}
+
+
+for(let key in data){
+
+let ap=data[key]
+
+for(let i=0;i<options.length;i++){
+if(options[i].value===ap.slot){
+options[i].disabled=true
+}
+}
+
+
+/* HISTORY */
+
+let history=[]
+
+for(let k in data){
+
+if(data[k].phone===ap.phone && k!==key){
+history.push(data[k].treatment)
+}
+
+}
+
+
+let li=document.createElement("li")
+
+let slotText=document.createElement("div")
+slotText.className="slot"
+slotText.innerText=`${ap.slot} - ${ap.name} (${ap.treatment})`
+
+let phoneText=document.createElement("div")
+phoneText.className="phone"
+phoneText.innerText=`📞 ${ap.phone}`
+
+let historyText=document.createElement("div")
+historyText.className="history"
+
+if(history.length>0){
+historyText.innerText="History: "+history.join(", ")
+}
+
+
+
+/* ACTION BUTTONS */
+
+let actions=document.createElement("div")
+actions.className="actions"
+
+
+let call=document.createElement("button")
+call.innerText="Call"
+call.className="callbtn"
+
+call.onclick=function(){
+window.location.href="tel:+91"+ap.phone
+}
+
+
+let remind=document.createElement("button")
+remind.innerText="Reminder"
+remind.className="reminder"
+
+remind.onclick=function(){
+
+let msg=`Reminder from Sri Chaitanya Dental Care
+
+Hello ${ap.name},
+
+Your appointment is today at ${ap.slot}.
+
+Location
+${clinicMap}`
+
+window.open(`https://wa.me/91${ap.phone}?text=${encodeURIComponent(msg)}`)
+
+}
+
+
+let cancel=document.createElement("button")
+cancel.innerText="Cancel"
+cancel.className="cancel"
+
+cancel.onclick=function(){
+db.ref("appointments/"+key).remove()
+}
+
+
+actions.appendChild(call)
+actions.appendChild(remind)
+actions.appendChild(cancel)
+
+
+li.appendChild(slotText)
+li.appendChild(phoneText)
+
+if(history.length>0){
+li.appendChild(historyText)
+}
+
+li.appendChild(actions)
+
+list.appendChild(li)
+
+}
+
+})
+
+
+
+/* BOOK APPOINTMENT */
+
+function book(){
+
+let patientType=document.getElementById("patientType").value
 let name=document.getElementById("name").value
 let phone=document.getElementById("phone").value
 let treatment=document.getElementById("treatment").value
-let time=document.getElementById("time").value
+let slot=document.getElementById("slot").value
 
-if(!name || !phone || !treatment || !time){
-
-alert("Please fill all details")
-
+if(!name||!phone||!treatment||!slot){
+alert("Fill all details")
 return
-
 }
 
-let date=new Date(time).toLocaleString()
+let slotKey=slot.replace(/[^a-zA-Z0-9]/g,"")
 
-let message=
-`🦷 Sri Chaitanya Dental Care Appointment
 
-Patient Type: ${type}
+db.ref("appointments/"+slotKey).once("value",snapshot=>{
 
-Patient Name: ${name}
+if(snapshot.exists()){
+alert("This slot already booked")
+return
+}
 
-Patient Phone: ${phone}
+
+db.ref("appointments/"+slotKey).set({
+
+patientType:patientType,
+name:name,
+phone:phone,
+treatment:treatment,
+slot:slot
+
+})
+
+
+let msg=`Sri Chaitanya Dental Care Appointment
+
+Patient Type: ${patientType}
+
+Name: ${name}
+
+Phone: ${phone}
 
 Treatment: ${treatment}
 
-Preferred Time: ${date}`
+Slot: ${slot}
 
-let doctorURL=`https://wa.me/${doctorNumber}?text=${encodeURIComponent(message)}`
-let clinicURL=`https://wa.me/${clinicNumber}?text=${encodeURIComponent(message)}`
+${clinicMap}`
 
-window.open(doctorURL)
 
-setTimeout(function(){
+window.open(`https://wa.me/${doctorNumber}?text=${encodeURIComponent(msg)}`)
 
-window.open(clinicURL)
+setTimeout(()=>{
+window.open(`https://wa.me/${clinicNumber}?text=${encodeURIComponent(msg)}`)
+},1200)
 
-},1500)
+})
 
 }
+
+
 
 function callClinic(){
-
-window.location.href="tel:+91XXXXXXXXXX"
-
+window.location.href="tel:+918317575165"
 }
 
+
 function openMap(){
-
 window.open(clinicMap)
-
 }
 
 </script>

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sri Chaitanya Dental Care</title>
+<title>Sri Chaitanya Multispeciality Dental Care</title>
 
 <style>
 
@@ -51,8 +51,6 @@ li{border-bottom:1px solid #eee;padding:10px;text-align:left}
 
 .phone{font-size:13px;color:#555}
 
-.history{font-size:12px;color:#777}
-
 .actions{margin-top:5px}
 
 .cancel{background:#e53935;color:white}
@@ -66,13 +64,12 @@ li{border-bottom:1px solid #eee;padding:10px;text-align:left}
 <body>
 
 <div class="header">
-<h2>🦷 Sri Chaitanya Dental Care</h2>
+<h2>🦷 Sri Chaitanya Multispeciality Dental Care 🦷</h2>
 <p>Appointment Booking</p>
 </div>
 
 
 <label>Select Appointment Date</label><br>
-
 <input type="date" id="date"><br>
 
 
@@ -143,7 +140,6 @@ storageBucket: "dentalbooking-66754.firebasestorage.app",
 messagingSenderId: "668789005424",
 
 appId: "1:668789005424:web:59440a98f73271afd428b5"
-
 }
 
 firebase.initializeApp(firebaseConfig)
@@ -157,10 +153,10 @@ let clinicNumber="918317575165"
 let clinicMap="https://maps.google.com/?q=Sri+Chaitanya+Dental+Care"
 
 
-/* DEFAULT TODAY DATE */
+
+/* DEFAULT DATE */
 
 let today=new Date().toISOString().split("T")[0]
-
 document.getElementById("date").value=today
 
 
@@ -183,7 +179,6 @@ if(display==0)display=12
 let time=`${display}:${minute} ${ampm}`
 
 let opt=document.createElement("option")
-
 opt.text=time
 opt.value=time
 
@@ -216,7 +211,6 @@ for(let k in data[d]){
 if(data[d][k].phone===phone){
 
 document.getElementById("name").value=data[d][k].name
-
 history.push(data[d][k].treatment)
 
 }
@@ -302,7 +296,7 @@ remind.className="reminder"
 
 remind.onclick=function(){
 
-let msg=`Reminder from Sri Chaitanya Dental Care
+let msg=`Reminder from Sri Chaitanya Multispeciality Dental Care
 
 Hello ${ap.name}
 
@@ -340,7 +334,6 @@ list.appendChild(li)
 
 loadAppointments()
 
-
 document.getElementById("date").addEventListener("change",loadAppointments)
 
 
@@ -360,10 +353,18 @@ let slot=document.getElementById("slot").value
 if(!name||!phone||!treatment||!slot){
 
 alert("Fill all details")
-
 return
 
 }
+
+
+/* APPOINTMENT ID */
+
+let timeCode=slot.replace(/[^0-9]/g,"")
+let dateCode=date.replaceAll("-","")
+
+let appointmentId="SC-"+dateCode+"-"+timeCode
+
 
 let slotKey=slot.replace(/[^a-zA-Z0-9]/g,"")
 
@@ -378,8 +379,10 @@ return
 
 }
 
+
 db.ref("appointments/"+date+"/"+slotKey).set({
 
+appointmentId,
 patientType,
 name,
 phone,
@@ -389,30 +392,39 @@ slot
 })
 
 
-let msg=`Sri Chaitanya Dental Care Appointment
+let msg=`*Sri Chaitanya Multispecaility Dental Care*
 
-Date: ${date}
+*Appointment Confirmed*
 
-Patient Type: ${patientType}
+Appointment ID: ${appointmentId}
 
-Name: ${name}
-
+Patient: ${name}
 Phone: ${phone}
+${patientType}
 
 Treatment: ${treatment}
+Time: ${slot}
+Date: ${date}
 
-Slot: ${slot}
-
+Location
 ${clinicMap}`
 
 
+/* SEND TO DOCTOR */
+
 window.open(`https://wa.me/${doctorNumber}?text=${encodeURIComponent(msg)}`)
 
+/* SEND TO CLINIC */
+
 setTimeout(()=>{
-
 window.open(`https://wa.me/${clinicNumber}?text=${encodeURIComponent(msg)}`)
+},1500)
 
-},1200)
+/* SEND TO PATIENT */
+
+setTimeout(()=>{
+window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(msg)}`)
+},3000)
 
 })
 

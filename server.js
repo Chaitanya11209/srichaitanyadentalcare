@@ -6,7 +6,6 @@ const qrcode = require("qrcode-terminal");
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
 
 // WhatsApp setup
 const client = new Client({
@@ -24,45 +23,52 @@ client.on("ready", () => {
 
 client.initialize();
 
-// Generate ID
-function generateID() {
-  return "DC-" + Date.now();
-}
-
 // API
-app.post("/book", (req, res) => {
+app.post("/book", async (req, res) => {
 
   const { name, phone, treatment, date, time } = req.body;
 
-  const id = generateID();
+  const appointmentID = "SC-" + date.replaceAll("-", "") + "-" + time.replace(/[^0-9]/g,"");
 
   const message =
-`🦷 Sri Chaitanya Dental Care
+`🦷 Sri Chaitanya Multispeciality Dental Care
 
 Appointment Confirmed
 
-ID: ${id}
+Appointment ID: ${appointmentID}
+
 Patient: ${name}
+Phone: ${phone}
+
 Treatment: ${treatment}
-Date: ${date}
 Time: ${time}
+Date: ${date}
 
 📍 Location:
 https://maps.google.com/?q=Sri+Chaitanya+Dental+Care`;
 
-  // Send to patient
-  client.sendMessage(`91${phone}@c.us`, message);
+  try {
 
-  // Send to clinic (your number)
-  client.sendMessage(`918277090710@c.us`, message);
+    // Patient
+    await client.sendMessage(`91${phone}@c.us`, message);
 
-  res.json({
-    status: "success",
-    appointment_id: id
-  });
+    // Clinic
+    await client.sendMessage(`918317575165@c.us`, message);
+
+    // Doctor
+    await client.sendMessage(`919346319812@c.us`, message);
+
+    res.json({ status: "success" });
+
+  } catch (err) {
+    console.log(err);
+    res.json({ status: "error" });
+  }
 
 });
 
-app.listen(3000, () => {
-  console.log("Server running");
+app.get("/", (req,res)=>{
+  res.send("Dental WhatsApp Server Running");
 });
+
+app.listen(3000, () => console.log("Server running 🚀"));
